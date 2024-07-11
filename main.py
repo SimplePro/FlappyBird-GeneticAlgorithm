@@ -197,26 +197,24 @@ def crossover_model(model1, model2):
     return new_model1, new_model2
 
 # ------ TRAIN -------
-# BIRDS_N = 20
-# MUTATION_N = 18
-# EPOCH = 200
+BIRDS_N = 20
+MUTATION_N = 18
+EPOCH = 200
 
 # ------ TEST -------
-BIRDS_N = 1
-EPOCH = 1
+# BIRDS_N = 1
+# EPOCH = 1
 
 
 # Define birds
 # --------- TRAIN --------
-# birds = [Bird() for i in range(BIRDS_N)]
+birds = [Bird() for i in range(BIRDS_N)]
 
 
 # ------ TEST -------
-birds = []
-with open("weights/epoch80.pickle", "rb") as f:
-    birds.append(pickle.load(f))
-
-
+# birds = []
+with open("weights (epoch1-epoch80)/epoch80.pickle", "rb") as f:
+    birds[0] = pickle.load(f)
 
 best_bird = None
 best_fitness = -1e4
@@ -321,31 +319,31 @@ for epoch in range(EPOCH):
 
 
     ### ver2
-    # for i in range(BIRDS_N - MUTATION_N):
-    #     new_bird = Bird()
-    #     new_bird.model.weight1 = deepcopy(best_bird.model.weight1)
-    #     new_bird.model.weight2 = deepcopy(best_bird.model.weight2)
+    for i in range(BIRDS_N - MUTATION_N):
+        new_bird = Bird()
+        new_bird.model.weight1 = deepcopy(best_bird.model.weight1)
+        new_bird.model.weight2 = deepcopy(best_bird.model.weight2)
 
-    #     birds.append(new_bird)
+        birds.append(new_bird)
 
-    # for i in range(MUTATION_N):
-    #     new_bird = Bird()
-    #     mutated_weights = best_bird.model.mutate()
+    for i in range(MUTATION_N):
+        new_bird = Bird()
+        mutated_weights = best_bird.model.mutate()
 
-    #     new_bird.model.weight1 = mutated_weights[0]
-    #     new_bird.model.bias1 = mutated_weights[1]
-    #     new_bird.model.weight2 = mutated_weights[2]
-    #     new_bird.model.bias2 = mutated_weights[3]
+        new_bird.model.weight1 = mutated_weights[0]
+        new_bird.model.bias1 = mutated_weights[1]
+        new_bird.model.weight2 = mutated_weights[2]
+        new_bird.model.bias2 = mutated_weights[3]
 
-    #     birds.append(new_bird)
+        birds.append(new_bird)
 
-    # print(f"EPOCH: {epoch+1}/{EPOCH}, best_fitness: %d"%(best_fitness), "score:", score)
+    print(f"EPOCH: {epoch+1}/{EPOCH}, best_fitness: %d"%(best_fitness), "score:", score)
 
-    # with open(f"weights/epoch{epoch+1}.pickle", mode="wb") as f:
-    #     pickle.dump(best_bird, f, protocol=pickle.HIGHEST_PROTOCOL)
+    with open(f"weights/epoch{epoch+1}.pickle", mode="wb") as f:
+        pickle.dump(best_bird, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-    # best_fitness = -1e4
-    # score = 0
+    best_fitness = -1e4
+    score = 0
 
 pygame.quit()
 
